@@ -1,4 +1,7 @@
 'use client';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, LogOut } from "lucide-react";
 import { DM_Sans, Lato } from "next/font/google";
 import { useState } from "react";
 
@@ -84,11 +87,12 @@ const applications: ApplicationProps[] = [
 ];
 
 const CandidateApplications = () => {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
-  const [activeMenu, setActiveMenu] = useState("My applications");
   const [showApplicationModal, setShowApplicationModal] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Dialog form states
   const [companyName, setCompanyName] = useState("");
@@ -141,15 +145,6 @@ const CandidateApplications = () => {
     setMatchedResults(results);
   };
 
-  const menuItems = [
-    "Home",
-    "Profile",
-    "Internships",
-    "My applications",
-    "Subscription",
-    "My score card"
-  ];
-
   const filterOptions = ["All", "Accepted", "Shortlisted", "Rejected", "Closed", "Applied"];
 
   const getStatusColor = (status: string) => {
@@ -181,53 +176,152 @@ const CandidateApplications = () => {
   });
 
   return (
-    <div className={`flex h-screen w-full ${dm_sans.className} bg-zinc-50`}>
-      {/* Mobile Menu Button */}
+    <div className={`flex min-h-screen bg-gray-50 text-black ${dm_sans.className}`}>
+      {/* Mobile menu button */}
       <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 left-4 z-50 md:hidden bg-zinc-800 text-white p-2 rounded-lg"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          {isMobileMenuOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
+        <Menu size={24} />
       </button>
 
-      {/* Left menu */}
-      <div className={`${
-        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 fixed md:relative w-56 bg-zinc-800 text-white p-6 flex flex-col h-full z-40 transition-transform duration-300 ease-in-out`}>
-        <h2 className="text-xl font-bold mb-6">Menu</h2>
-        <ul className="space-y-4">
-          {menuItems.map((item) => (
-            <li
-              key={item}
-              onClick={() => {
-                setActiveMenu(item);
-                setIsMobileMenuOpen(false);
-              }}
-              className="hover:text-blue-400 cursor-pointer"
+      {/* ===== SIDEBAR ===== */}
+      <div
+        className={`${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 fixed lg:static w-60 min-h-screen bg-gray-100 p-4 flex flex-col justify-between transition-transform duration-300 ease-in-out z-40`}
+      >
+        <div>
+          <h1 className="text-xl font-bold">InternHire</h1>
+          <p className="text-sm text-gray-500 mb-6">Candidate</p>
+
+          <nav className="flex flex-col gap-2 text-sm">
+            <Link
+              href="/loged/candidate"
+              className={`px-3 py-2 rounded ${
+                pathname === "/loged/candidate" ? "bg-gray-300" : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
             >
-              {item}
-            </li>
-          ))}
-        </ul>
+              Home
+            </Link>
+
+            <Link
+              href="/loged/candidate/profile"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/profile")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Profile
+            </Link>
+
+            <Link
+              href="/loged/candidate/internships"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/internships")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Internships
+            </Link>
+
+            <Link
+              href="/loged/candidate/applications"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/applications")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              My applications
+            </Link>
+
+            <Link
+              href="/loged/candidate/Subscription"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/Subscription")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Subscription
+            </Link>
+
+            <Link
+              href="/loged/candidate/ScoreCard"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/ScoreCard")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              My score card
+            </Link>
+          </nav>
+        </div>
+
+        {/* Bottom buttons */}
+        <div className="flex justify-between items-center">
+          <button onClick={() => setOpen(true)} className="text-gray-600">
+            <Menu />
+          </button>
+          <button className="text-gray-600 hover:text-gray-800">
+            <LogOut />
+          </button>
+        </div>
       </div>
 
       {/* Overlay for mobile */}
-      {isMobileMenuOpen && (
+      {sidebarOpen && (
         <div
-          onClick={() => setIsMobileMenuOpen(false)}
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
-        />
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
       )}
 
-      {/* Right content */}
-      <div className="flex-1 flex flex-col bg-white text-black overflow-auto relative">
-        <div className="p-4 md:p-8 w-full pt-16 md:pt-8">
+      {/* Popup menu */}
+      {open && (
+        <div className="fixed bottom-20 left-4 lg:left-10 bg-white p-6 rounded-xl shadow-lg w-64 z-50">
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute top-2 right-3 text-xl"
+          >
+            ×
+          </button>
+          <ul className="space-y-3 text-sm">
+            <li>
+              <a href="">About us</a>
+            </li>
+            <li>
+              <a href="">Terms</a>
+            </li>
+            <li>
+              <a href="">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="">Shipping Policy</a>
+            </li>
+            <li>
+              <a href="">Refund Policy</a>
+            </li>
+            <li>
+              <a href="">Contact us</a>
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* ===== MAIN CONTENT ===== */}
+      <div className="flex-1 p-4 lg:p-8 pt-16 lg:pt-8">
+        <div className="bg-white p-4 lg:p-8 rounded-xl shadow-sm">
           <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">My Applications</h1>
 
           {/* Filter buttons */}
@@ -254,13 +348,13 @@ const CandidateApplications = () => {
               value={searchText}
               onChange={handleChange}
               placeholder="Search"
-              className="w-full rounded-md bg-zinc-100
+              className="w-full rounded-md bg-gray-100
                         py-2 px-10 text-sm text-black
-                        focus:outline-none focus:border focus:border-zinc-400"
+                        focus:outline-none focus:border focus:border-gray-400"
             />
 
             {/* Search icon */}
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
               🔍
             </span>
 
@@ -268,7 +362,7 @@ const CandidateApplications = () => {
             {searchText && (
               <span
                 className="absolute right-3 top-1/2 -translate-y-1/2
-                          text-zinc-400 cursor-pointer hover:text-black"
+                          text-gray-400 cursor-pointer hover:text-black"
                 onClick={handleClear}
               >
                 ✕
@@ -291,13 +385,13 @@ const CandidateApplications = () => {
           </div>
 
           {/* Table Rows - Mobile Card Layout / Desktop Table */}
-          <div className="text-center flex flex-col border border-zinc-200 rounded-lg overflow-hidden text-black">
+          <div className="text-center flex flex-col border border-gray-200 rounded-lg overflow-hidden text-black">
             {filteredApplications.map((app, idx) => (
               <div
                 key={idx}
                 className={`${
-                  idx % 2 !== 0 ? "bg-white" : "bg-zinc-200/50"
-                } last:border-0 hover:bg-zinc-100 transition-colors`}
+                  idx % 2 !== 0 ? "bg-white" : "bg-gray-200/50"
+                } last:border-0 hover:bg-gray-100 transition-colors`}
               >
                 {/* Mobile Card Layout */}
                 <div className="lg:hidden p-4 space-y-2">
@@ -352,110 +446,110 @@ const CandidateApplications = () => {
             )}
           </div>
         </div>
+      </div>
 
-        {/* Application Modal */}
-        {showApplicationModal && (
-          <div className="fixed inset-0 bg-gray-300/80 flex items-center justify-center p-4 md:p-8 z-50">
-            <div className="bg-gray-200 rounded-3xl p-6 md:p-8 w-full max-w-4xl max-h-[90vh] overflow-auto relative shadow-2xl">
-              {/* Close button */}
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 md:top-6 md:right-6 text-2xl font-bold hover:text-gray-600 transition-colors"
+      {/* Application Modal */}
+      {showApplicationModal && (
+        <div className="fixed inset-0 bg-gray-300/80 flex items-center justify-center p-4 md:p-8 z-50">
+          <div className="bg-gray-200 rounded-3xl p-6 md:p-8 w-full max-w-4xl max-h-[90vh] overflow-auto relative shadow-2xl">
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 md:top-6 md:right-6 text-2xl font-bold hover:text-gray-600 transition-colors"
+            >
+              ✕
+            </button>
+
+            {/* Modal Header */}
+            <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 text-center pr-8">
+              Search Application
+            </h2>
+
+            {/* Form Fields */}
+            <div className="space-y-4 md:space-y-6">
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className="w-full px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+
+              <input
+                type="text"
+                placeholder="Time Commitment (e.g., Full-time, Part-time)"
+                value={timeCommitment}
+                onChange={(e) => setTimeCommitment(e.target.value)}
+                className="w-full md:w-3/4 mx-auto block px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="w-full px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
-                ✕
-              </button>
+                <option value="">Select Type</option>
+                <option value="internship">Internship</option>
+                <option value="job">Job</option>
+                <option value="freelance">Freelance</option>
+                <option value="contract">Contract</option>
+              </select>
 
-              {/* Modal Header */}
-              <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 text-center pr-8">
-                Search Application
-              </h2>
-
-              {/* Form Fields */}
-              <div className="space-y-4 md:space-y-6">
+              <div className="flex gap-3 md:gap-4 items-center pt-4 md:pt-8">
                 <input
                   type="text"
-                  placeholder="Company Name"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  className="w-full px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="Location"
+                  value={locationInput}
+                  onChange={(e) => setLocationInput(e.target.value)}
+                  className="flex-1 px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
-
-                <input
-                  type="text"
-                  placeholder="Time Commitment (e.g., Full-time, Part-time)"
-                  value={timeCommitment}
-                  onChange={(e) => setTimeCommitment(e.target.value)}
-                  className="w-full md:w-3/4 mx-auto block px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-
-                <select
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value)}
-                  className="w-full px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                <button 
+                  onClick={handleSearch}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl transition-colors flex items-center justify-center"
                 >
-                  <option value="">Select Type</option>
-                  <option value="internship">Internship</option>
-                  <option value="job">Job</option>
-                  <option value="freelance">Freelance</option>
-                  <option value="contract">Contract</option>
-                </select>
+                  <span className="text-xl md:text-2xl">→</span>
+                </button>
+              </div>
+            </div>
 
-                <div className="flex gap-3 md:gap-4 items-center pt-4 md:pt-8">
-                  <input
-                    type="text"
-                    placeholder="Location"
-                    value={locationInput}
-                    onChange={(e) => setLocationInput(e.target.value)}
-                    className="flex-1 px-4 md:px-6 py-3 md:py-4 rounded-2xl bg-white text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
-                  <button 
-                    onClick={handleSearch}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl transition-colors flex items-center justify-center"
-                  >
-                    <span className="text-xl md:text-2xl">→</span>
-                  </button>
+            {/* Search Results Section */}
+            {matchedResults.length > 0 && (
+              <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-gray-400">
+                <h3 className="text-lg md:text-xl font-bold mb-4">Matching Applications:</h3>
+                <div className="space-y-3 md:space-y-4 max-h-64 overflow-y-auto">
+                  {matchedResults.map((app, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3 md:p-4 bg-white rounded-2xl hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-semibold text-base md:text-lg">{app.title}</h4>
+                        <span className={`font-semibold text-sm ${getStatusColor(app.status)}`}>
+                          {app.status}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-xs md:text-sm text-gray-600">
+                        <div><span className="font-medium">Type:</span> {app.type}</div>
+                        <div><span className="font-medium">Involvement:</span> {app.involvement}</div>
+                        <div><span className="font-medium">Location:</span> {app.location}</div>
+                        <div><span className="font-medium">Positions:</span> {app.positions}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
+            )}
 
-              {/* Search Results Section */}
-              {matchedResults.length > 0 && (
-                <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-gray-400">
-                  <h3 className="text-lg md:text-xl font-bold mb-4">Matching Applications:</h3>
-                  <div className="space-y-3 md:space-y-4 max-h-64 overflow-y-auto">
-                    {matchedResults.map((app, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3 md:p-4 bg-white rounded-2xl hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-semibold text-base md:text-lg">{app.title}</h4>
-                          <span className={`font-semibold text-sm ${getStatusColor(app.status)}`}>
-                            {app.status}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 text-xs md:text-sm text-gray-600">
-                          <div><span className="font-medium">Type:</span> {app.type}</div>
-                          <div><span className="font-medium">Involvement:</span> {app.involvement}</div>
-                          <div><span className="font-medium">Location:</span> {app.location}</div>
-                          <div><span className="font-medium">Positions:</span> {app.positions}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* No Results Message */}
-              {matchedResults.length === 0 && (companyName || timeCommitment || selectedType || locationInput) && (
-                <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-gray-400 text-center">
-                  <p className="text-gray-600 text-base md:text-lg">No matching applications found</p>
-                  <p className="text-gray-500 text-xs md:text-sm mt-2">Try adjusting your search criteria</p>
-                </div>
-              )}
-            </div>
+            {/* No Results Message */}
+            {matchedResults.length === 0 && (companyName || timeCommitment || selectedType || locationInput) && (
+              <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-gray-400 text-center">
+                <p className="text-gray-600 text-base md:text-lg">No matching applications found</p>
+                <p className="text-gray-500 text-xs md:text-sm mt-2">Try adjusting your search criteria</p>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

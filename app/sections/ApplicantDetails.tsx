@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, LogOut } from "lucide-react";
 
-export default function ScoreCard() {
+
+export default function ApplicantDetailsPage() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -56,7 +57,7 @@ export default function ScoreCard() {
   );
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-black" >
+    <div className="flex min-h-screen bg-gray-50 text-black">
       {/* Mobile menu button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -73,13 +74,13 @@ export default function ScoreCard() {
       >
         <div>
           <h1 className="text-xl font-bold">InternHire</h1>
-          <p className="text-sm text-gray-500 mb-6">Candidate</p>
+          <p className="text-sm text-gray-500 mb-6">Recruiter</p>
 
           <nav className="flex flex-col gap-2 text-sm">
             <Link
-              href="/loged/candidate"
+              href="/loged/recruiter"
               className={`px-3 py-2 rounded ${
-                pathname === "/loged/candidate" ? "bg-gray-300" : ""
+                pathname === "/loged/recruiter" ? "bg-gray-300" : ""
               }`}
               onClick={() => setSidebarOpen(false)}
             >
@@ -87,9 +88,9 @@ export default function ScoreCard() {
             </Link>
 
             <Link
-              href="/loged/candidate/profile"
+              href="/loged/recruiter/profile"
               className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/candidate/profile")
+                pathname.startsWith("/loged/recruiter/profile")
                   ? "bg-gray-300"
                   : ""
               }`}
@@ -99,51 +100,51 @@ export default function ScoreCard() {
             </Link>
 
             <Link
-              href="/loged/candidate/internships"
+              href="/loged/recruiter/new-internship"
               className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/candidate/internships")
+                pathname.startsWith("/loged/recruiter/new-internship")
                   ? "bg-gray-300"
                   : ""
               }`}
               onClick={() => setSidebarOpen(false)}
             >
-              Internships
+              + new Internship
             </Link>
 
             <Link
-              href="/loged/candidate/applications"
+              href="/loged/recruiter/drafts"
               className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/candidate/applications")
+                pathname.startsWith("/loged/recruiter/drafts")
                   ? "bg-gray-300"
                   : ""
               }`}
               onClick={() => setSidebarOpen(false)}
             >
-              My applications
+              Your Drafts
             </Link>
 
             <Link
-              href="/loged/candidate/Subscription"
+              href="/loged/recruiter/posted-internships"
               className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/candidate/Subscription")
+                pathname.startsWith("/loged/recruiter/posted-internships")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Posted Internships
+            </Link>
+
+            <Link
+              href="/loged/recruiter/subscription"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/recruiter/subscription")
                   ? "bg-gray-300"
                   : ""
               }`}
               onClick={() => setSidebarOpen(false)}
             >
               Subscription
-            </Link>
-
-            <Link
-              href="/loged/candidate/ScoreCard"
-              className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/candidate/ScoreCard")
-                  ? "bg-gray-300"
-                  : ""
-              }`}
-              onClick={() => setSidebarOpen(false)}
-            >
-              My score card
             </Link>
           </nav>
         </div>
@@ -203,48 +204,59 @@ export default function ScoreCard() {
       <div className="flex-1 p-4 lg:p-8 pt-16 lg:pt-8">
         <div className="bg-white p-4 lg:p-8 rounded-xl shadow-sm">
           {/* ===== HEADER ===== */}
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-3">
-            <div>
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 lg:mb-8 gap-3">
+            <div className="flex items-center gap-3">
+              <button className="text-blue-500 text-sm flex items-center gap-1">
+                ← back
+              </button>
               <h1 className="text-xl lg:text-2xl font-bold">
-                Industry Readiness - Score Card
+                Applicant's details
               </h1>
-              <p className="text-sm text-gray-500">score_id : sdfkj3920248ks</p>
             </div>
-
-            <div className="flex flex-col sm:flex-row gap-2 lg:gap-3 w-full lg:w-auto">
-              <button className="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-800 transition-colors">
-                Download →
-              </button>
-              <button className="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-800 transition-colors">
-                share score card →
-              </button>
-            </div>
+            <p className="text-xs lg:text-sm text-gray-600">
+              applied on : 06-jan-2026
+            </p>
           </div>
 
-          {/* ===== INFO TABLE ===== */}
-          <div className="space-y-2 text-sm mb-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 bg-gray-50 p-3 rounded gap-2">
+          {/* ===== INFO SECTION ===== */}
+          <div className="space-y-3 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 bg-gray-50 p-3 lg:p-4 rounded gap-2">
               <span className="font-medium">Name</span>
-              <span>skdj</span>
+              <span>sdkdj</span>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 p-3 gap-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 p-3 lg:p-4 gap-2">
               <span className="font-medium">College</span>
               <span>IIT M</span>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 bg-gray-50 p-3 rounded gap-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 bg-gray-50 p-3 lg:p-4 rounded gap-2">
               <span className="font-medium">Course, Year</span>
-              <span>B.Tech, CSE, 3rd Year</span>
+              <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
+                <span>B.Tech, CSE , 3rd Year</span>
+                <span className="text-xs lg:text-sm text-gray-600">
+                  Currently a student : yes, Completing in 2026
+                </span>
+              </div>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 p-3 gap-2">
-              <span className="font-medium">Currently a student</span>
-              <span>yes</span>
+            <div className="grid grid-cols-2 lg:grid-cols-2 p-3 lg:p-4 gap-2">
+              <span className="font-medium">X :</span>
+              <span className="font-medium">XII :</span>
+            </div>
+            <div className="bg-gray-50 p-3 lg:p-4 rounded">
+              <span className="font-medium">Experience :</span>
             </div>
           </div>
 
+          {/* ===== SCORE ID ===== */}
+          <p className="text-blue-400 text-xs lg:text-sm mb-4 italic">
+            score id : akdjhrwekfojw
+          </p>
+
           {/* ===== OVERALL SCORE ===== */}
-          <div className="bg-gray-100 rounded-xl p-4 lg:p-6 mb-6">
-            <h2 className="font-semibold text-lg mb-4 lg:mb-0">Overall Score</h2>
-            <div className="flex flex-col lg:flex-row lg:justify-end gap-6 lg:gap-10 text-center">
+          <div className="bg-gray-50 rounded-xl p-4 lg:p-6 mb-6 lg:mb-8">
+            <h2 className="font-semibold text-lg lg:text-xl mb-4 lg:mb-0">
+              Overall Score
+            </h2>
+            <div className="flex flex-col lg:flex-row lg:justify-end gap-6 lg:gap-16 text-center">
               <div>
                 <p className="text-xl lg:text-2xl font-bold">91.032</p>
                 <p className="text-xs text-gray-500">(score)</p>
@@ -261,22 +273,24 @@ export default function ScoreCard() {
           </div>
 
           {/* ===== SEARCH ===== */}
-          <input
-            type="text"
-            placeholder="🔍 Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-3 rounded-full border mb-6 text-sm"
-          />
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="🔍 Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-3 rounded-lg bg-gray-50 border-0 text-sm"
+            />
+          </div>
 
-          {/* ===== TABLE ===== */}
-          <h3 className="font-semibold mb-3 text-base lg:text-lg">
+          {/* ===== TABLE SECTION ===== */}
+          <h3 className="font-semibold text-base lg:text-lg mb-4">
             Detailed score / ranks in domains and sub-domains
           </h3>
 
           {/* Desktop Table */}
-          <div className="hidden lg:block text-sm">
-            <div className="grid grid-cols-5 font-semibold border-b pb-2 mb-2">
+          <div className="hidden lg:block text-sm overflow-x-auto">
+            <div className="grid grid-cols-5 font-medium pb-3 mb-2 border-b italic min-w-[800px]">
               <span>Domain</span>
               <span>Sub-Domain</span>
               <span>Score</span>
@@ -287,13 +301,15 @@ export default function ScoreCard() {
             {filtered.map((row, i) => (
               <div
                 key={i}
-                className="grid grid-cols-5 py-3 border-b hover:bg-gray-50"
+                className="grid grid-cols-5 py-4 border-b hover:bg-gray-50 items-center min-w-[800px]"
               >
-                <span>{row.domain}</span>
+                <span className="font-medium">{row.domain}</span>
                 <span>{row.sub}</span>
                 <span>{row.score}</span>
                 <span>{row.percentile}</span>
-                <span>{row.rank} →</span>
+                <span className="flex items-center gap-2">
+                  {row.rank} <span className="text-lg">→</span>
+                </span>
               </div>
             ))}
           </div>
@@ -321,12 +337,6 @@ export default function ScoreCard() {
               </div>
             ))}
           </div>
-
-          {filtered.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              No results found for "{search}"
-            </div>
-          )}
         </div>
       </div>
     </div>

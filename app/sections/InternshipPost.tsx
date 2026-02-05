@@ -1,6 +1,9 @@
 'use client';
-import { DM_Sans, Lato } from "next/font/google";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { Menu, LogOut } from "lucide-react";
+import { DM_Sans, Lato } from "next/font/google";
 
 const dm_sans = DM_Sans({
   subsets: ["latin"],
@@ -16,19 +19,11 @@ const lato = Lato({
 type ButtonState = "apply" | "applied" | "no-subscription" | "incomplete-profile";
 
 const InternshipPost = () => {
-  const [activeMenu, setActiveMenu] = useState("Internships");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   // Change this to see different button states: "apply" | "applied" | "no-subscription" | "incomplete-profile"
   const [buttonState, setButtonState] = useState<ButtonState>("apply");
-
-  const menuItems = [
-    "Home",
-    "Profile",
-    "Internships",
-    "My applications",
-    "Subscription",
-    "My score card"
-  ];
 
   const renderButton = () => {
     switch (buttonState) {
@@ -89,55 +84,154 @@ const InternshipPost = () => {
   };
 
   return (
-    <div className={`flex h-screen w-full ${dm_sans.className} bg-zinc-50`}>
-      {/* Mobile Menu Button */}
+    <div className={`flex min-h-screen bg-gray-50 text-black ${dm_sans.className}`}>
+      {/* Mobile menu button */}
       <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 left-4 z-50 md:hidden bg-zinc-800 text-white p-2 rounded-lg"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          {isMobileMenuOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
+        <Menu size={24} />
       </button>
 
-      {/* Left menu */}
-      <div className={`${
-        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 fixed md:relative w-56 bg-zinc-800 text-white p-6 flex flex-col h-full z-40 transition-transform duration-300 ease-in-out`}>
-        <h2 className="text-xl font-bold mb-6">Menu</h2>
-        <ul className="space-y-4">
-          {menuItems.map((item) => (
-            <li
-              key={item}
-              onClick={() => {
-                setActiveMenu(item);
-                setIsMobileMenuOpen(false);
-              }}
-              className="hover:text-blue-400 cursor-pointer"
+      {/* ===== SIDEBAR ===== */}
+      <div
+        className={`${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 fixed lg:static w-60 min-h-screen bg-gray-100 p-4 flex flex-col justify-between transition-transform duration-300 ease-in-out z-40`}
+      >
+        <div>
+          <h1 className="text-xl font-bold">InternHire</h1>
+          <p className="text-sm text-gray-500 mb-6">Candidate</p>
+
+          <nav className="flex flex-col gap-2 text-sm">
+            <Link
+              href="/loged/candidate"
+              className={`px-3 py-2 rounded ${
+                pathname === "/loged/candidate" ? "bg-gray-300" : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
             >
-              {item}
-            </li>
-          ))}
-        </ul>
+              Home
+            </Link>
+
+            <Link
+              href="/loged/candidate/profile"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/profile")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Profile
+            </Link>
+
+            <Link
+              href="/loged/candidate/internships"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/internships")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Internships
+            </Link>
+
+            <Link
+              href="/loged/candidate/applications"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/applications")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              My applications
+            </Link>
+
+            <Link
+              href="/loged/candidate/Subscription"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/Subscription")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Subscription
+            </Link>
+
+            <Link
+              href="/loged/candidate/ScoreCard"
+              className={`px-3 py-2 rounded ${
+                pathname.startsWith("/loged/candidate/ScoreCard")
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              My score card
+            </Link>
+          </nav>
+        </div>
+
+        {/* Bottom buttons */}
+        <div className="flex justify-between items-center">
+          <button onClick={() => setOpen(true)} className="text-gray-600">
+            <Menu />
+          </button>
+          <button className="text-gray-600 hover:text-gray-800">
+            <LogOut />
+          </button>
+        </div>
       </div>
 
       {/* Overlay for mobile */}
-      {isMobileMenuOpen && (
+      {sidebarOpen && (
         <div
-          onClick={() => setIsMobileMenuOpen(false)}
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
-        />
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
       )}
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col bg-white text-black overflow-auto p-4 md:p-8">
-        <div className="bg-white rounded-lg w-full shadow-lg">
+      {/* Popup menu */}
+      {open && (
+        <div className="fixed bottom-20 left-4 lg:left-10 bg-white p-6 rounded-xl shadow-lg w-64 z-50">
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute top-2 right-3 text-xl"
+          >
+            ×
+          </button>
+          <ul className="space-y-3 text-sm">
+            <li>
+              <a href="">About us</a>
+            </li>
+            <li>
+              <a href="">Terms</a>
+            </li>
+            <li>
+              <a href="">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="">Shipping Policy</a>
+            </li>
+            <li>
+              <a href="">Refund Policy</a>
+            </li>
+            <li>
+              <a href="">Contact us</a>
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* ===== MAIN CONTENT ===== */}
+      <div className="flex-1 p-4 lg:p-8 pt-16 lg:pt-8">
+        <div className="bg-white rounded-xl shadow-sm">
           {/* Header */}
-          <div className="bg-gray-100 px-4 md:px-8 py-4 md:py-6 rounded-t-lg">
+          <div className="bg-gray-100 px-4 md:px-8 py-4 md:py-6 rounded-t-xl">
             <h1 className="text-xl md:text-3xl font-bold mb-2">Internship Details</h1>
             <p className="text-xs md:text-sm text-gray-600 italic">Job id : sflkfsdk f2432348974</p>
           </div>

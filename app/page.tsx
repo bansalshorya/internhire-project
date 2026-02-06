@@ -9,6 +9,7 @@ import InternshipPost from "./sections/InternshipPost";
 import SubscriptionPage from "./sections/SubscriptionPage";
 import ScoreCard from "./sections/ScoreCard";
 import ApplicantDetails from "./sections/ApplicantDetails";
+import HomePage from "./sections/HomePage";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
       {/* <SubscriptionPage/> */}
       {/* <ScoreCard/> */}
       {/* <ApplicantDetails/> */}
+      <HomePage/>
     </div>
   );
 }

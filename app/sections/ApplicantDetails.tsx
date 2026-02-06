@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, LogOut } from "lucide-react";
+// import { Menu, LogOut } from "lucide-react";
 
 
 export default function ApplicantDetailsPage() {
@@ -11,6 +11,57 @@ export default function ApplicantDetailsPage() {
   const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
+
+
+  // Custom Icon Components
+  const Menu = ({ className = "", size = 24 }: { className?: string; size?: number }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+    >
+      <path d="M20 7L4 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M20 17L4 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+
+  const LogOut = ({ className = "", size = 24 }: { className?: string; size?: number }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M2 6.5C2 4.01472 4.01472 2 6.5 2H12C14.2091 2 16 3.79086 16 6V7C16 7.55228 15.5523 8 15 8C14.4477 8 14 7.55228 14 7V6C14 4.89543 13.1046 4 12 4H6.5C5.11929 4 4 5.11929 4 6.5V17.5C4 18.8807 5.11929 20 6.5 20H12C13.1046 20 14 19.1046 14 18V17C14 16.4477 14.4477 16 15 16C15.5523 16 16 16.4477 16 17V18C16 20.2091 14.2091 22 12 22H6.5C4.01472 22 2 19.9853 2 17.5V6.5ZM18.2929 8.29289C18.6834 7.90237 19.3166 7.90237 19.7071 8.29289L22.7071 11.2929C23.0976 11.6834 23.0976 12.3166 22.7071 12.7071L19.7071 15.7071C19.3166 16.0976 18.6834 16.0976 18.2929 15.7071C17.9024 15.3166 17.9024 14.6834 18.2929 14.2929L19.5858 13L11 13C10.4477 13 10 12.5523 10 12C10 11.4477 10.4477 11 11 11L19.5858 11L18.2929 9.70711C17.9024 9.31658 17.9024 8.68342 18.2929 8.29289Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+
+  const CloseIcon = ({ className = "", size = 24 }: { className?: string; size?: number }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+    >
+      <path
+        d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
 
   const data = [
     {
@@ -68,9 +119,8 @@ export default function ApplicantDetailsPage() {
 
       {/* ===== SIDEBAR ===== */}
       <div
-        className={`${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 fixed lg:static w-60 min-h-screen bg-gray-100 p-4 flex flex-col justify-between transition-transform duration-300 ease-in-out z-40`}
+        className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0 fixed lg:static w-60 min-h-screen bg-gray-100 p-4 flex flex-col justify-between transition-transform duration-300 ease-in-out z-40`}
       >
         <div>
           <h1 className="text-xl font-bold">InternHire</h1>
@@ -79,9 +129,8 @@ export default function ApplicantDetailsPage() {
           <nav className="flex flex-col gap-2 text-sm">
             <Link
               href="/loged/recruiter"
-              className={`px-3 py-2 rounded ${
-                pathname === "/loged/recruiter" ? "bg-gray-300" : ""
-              }`}
+              className={`px-3 py-2 rounded ${pathname === "/loged/recruiter" ? "bg-gray-300" : ""
+                }`}
               onClick={() => setSidebarOpen(false)}
             >
               Home
@@ -89,11 +138,10 @@ export default function ApplicantDetailsPage() {
 
             <Link
               href="/loged/recruiter/profile"
-              className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/recruiter/profile")
-                  ? "bg-gray-300"
-                  : ""
-              }`}
+              className={`px-3 py-2 rounded ${pathname.startsWith("/loged/recruiter/profile")
+                ? "bg-gray-300"
+                : ""
+                }`}
               onClick={() => setSidebarOpen(false)}
             >
               Profile
@@ -101,11 +149,10 @@ export default function ApplicantDetailsPage() {
 
             <Link
               href="/loged/recruiter/new-internship"
-              className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/recruiter/new-internship")
-                  ? "bg-gray-300"
-                  : ""
-              }`}
+              className={`px-3 py-2 rounded ${pathname.startsWith("/loged/recruiter/new-internship")
+                ? "bg-gray-300"
+                : ""
+                }`}
               onClick={() => setSidebarOpen(false)}
             >
               + new Internship
@@ -113,11 +160,10 @@ export default function ApplicantDetailsPage() {
 
             <Link
               href="/loged/recruiter/drafts"
-              className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/recruiter/drafts")
-                  ? "bg-gray-300"
-                  : ""
-              }`}
+              className={`px-3 py-2 rounded ${pathname.startsWith("/loged/recruiter/drafts")
+                ? "bg-gray-300"
+                : ""
+                }`}
               onClick={() => setSidebarOpen(false)}
             >
               Your Drafts
@@ -125,11 +171,10 @@ export default function ApplicantDetailsPage() {
 
             <Link
               href="/loged/recruiter/posted-internships"
-              className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/recruiter/posted-internships")
-                  ? "bg-gray-300"
-                  : ""
-              }`}
+              className={`px-3 py-2 rounded ${pathname.startsWith("/loged/recruiter/posted-internships")
+                ? "bg-gray-300"
+                : ""
+                }`}
               onClick={() => setSidebarOpen(false)}
             >
               Posted Internships
@@ -137,11 +182,10 @@ export default function ApplicantDetailsPage() {
 
             <Link
               href="/loged/recruiter/subscription"
-              className={`px-3 py-2 rounded ${
-                pathname.startsWith("/loged/recruiter/subscription")
-                  ? "bg-gray-300"
-                  : ""
-              }`}
+              className={`px-3 py-2 rounded ${pathname.startsWith("/loged/recruiter/subscription")
+                ? "bg-gray-300"
+                : ""
+                }`}
               onClick={() => setSidebarOpen(false)}
             >
               Subscription
@@ -173,9 +217,9 @@ export default function ApplicantDetailsPage() {
         <div className="fixed bottom-20 left-4 lg:left-10 bg-white p-6 rounded-xl shadow-lg w-64 z-50">
           <button
             onClick={() => setOpen(false)}
-            className="absolute top-2 right-3 text-xl"
+            className="absolute top-2 right-3 text-gray-600 hover:text-gray-800"
           >
-            ×
+            <CloseIcon size={20} />
           </button>
           <ul className="space-y-3 text-sm">
             <li>
